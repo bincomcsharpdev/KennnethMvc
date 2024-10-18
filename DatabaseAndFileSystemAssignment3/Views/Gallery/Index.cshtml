@@ -1,0 +1,22 @@
+﻿@model IEnumerable<GalleryItem>
+
+@{
+    ViewData["Title"] = "Gallery";
+}
+
+<h2>Image Gallery</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img class="card-img-top" src="@item.ImagePath" alt="@item.Title" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">Uploaded on: @item.UploadDate.ToShortDateString()</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
