@@ -18,7 +18,22 @@ namespace DatabaseAndFileSystemAssignment3.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Experience()
+        {
+            return View();
+        }
+
+        public IActionResult Skills()
+        {
+            return View();
+        }
+
+        public IActionResult Projects()
+        {
+            return View();
+        }
+
+        public IActionResult CertificationsAndEducation()
         {
             return View();
         }
