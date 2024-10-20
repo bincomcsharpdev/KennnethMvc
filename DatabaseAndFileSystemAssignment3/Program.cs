@@ -9,7 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"),
+    sqlServerOptionsAction: sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,         // Number of retry attempts
+            maxRetryDelay: TimeSpan.FromSeconds(30),  // Delay between retries
+            errorNumbersToAdd: null    // Specific error numbers (optional)
+        );
+    }));
 
 builder.Services.AddScoped<IGallaryService, GalleryService>();
 

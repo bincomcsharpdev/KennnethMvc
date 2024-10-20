@@ -14,7 +14,7 @@ namespace DatabaseAndFileSystemAssignment3.Repository
         }
         public async Task<List<GalleryItem>> GetAllGalleryItemsAsync()
         {
-            return await _dbContext.Kenneths.ToListAsync();
+            return await _dbContext.Kenneth_GalleryItems.ToListAsync();
         }
 
         public async Task<GalleryItem> UploadImageAsync(IFormFile imageFile, string title)
@@ -43,7 +43,7 @@ namespace DatabaseAndFileSystemAssignment3.Repository
             };
 
             // Save to the database
-            _dbContext.Kenneths.Add(newGalleryItem);
+            _dbContext.Kenneth_GalleryItems.Add(newGalleryItem);
             await _dbContext.SaveChangesAsync();
 
             return newGalleryItem;
