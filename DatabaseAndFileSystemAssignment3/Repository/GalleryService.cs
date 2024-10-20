@@ -26,7 +26,7 @@ namespace DatabaseAndFileSystemAssignment3.Repository
 
             // Generate a unique filename and save the image
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-            var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+            var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
 
             if (!Directory.Exists(imagesFolder))
             {
