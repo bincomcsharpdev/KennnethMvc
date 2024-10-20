@@ -26,10 +26,17 @@ namespace DatabaseAndFileSystemAssignment3.Repository
 
             // Generate a unique filename and save the image
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+            var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+            if (!Directory.Exists(imagesFolder))
+            {
+                Directory.CreateDirectory(imagesFolder);
+            }
+
+            var fullImagePath = Path.Combine(imagesFolder, fileName);
 
             // Save the image to the wwwroot/images folder
-            using (var stream = new FileStream(path, FileMode.Create))
+            using (var stream = new FileStream(fullImagePath, FileMode.Create))
             {
                 await imageFile.CopyToAsync(stream);
             }
