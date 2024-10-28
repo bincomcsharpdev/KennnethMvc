@@ -4,9 +4,9 @@
     ViewData["Title"] = "Gallery";
 }
 
-<h2>Image Gallery</h2>
 
-<div class="row">
+
+@* <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-md-4">
@@ -33,5 +33,23 @@
                 <img id="modalImage" src="" class="img-fluid" alt="Preview" />
             </div>
         </div>
+    </div>
+</div> *@
+<link rel="stylesheet" href="~/css/photo.css" asp-append-version="true" />
+
+<div class="container-fluid">
+    <h2>Photo Gallery</h2>
+    <a href="@Url.Action("Upload")" class="link">Upload Photo</a>
+
+    <div class="gallery">
+        @foreach (var photo in Model)
+        {
+            <div class="photo-item">
+                <h3>@photo.Title</h3>
+                <img src="@Url.Action("GetImage", "Gallery", new { id = photo.Id })" alt="@photo.Title" width="150" />
+                <p>@photo.Description</p>
+                
+            </div>
+        }
     </div>
 </div>

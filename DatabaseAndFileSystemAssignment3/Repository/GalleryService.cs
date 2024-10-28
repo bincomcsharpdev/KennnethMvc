@@ -17,43 +17,61 @@ namespace DatabaseAndFileSystemAssignment3.Repository
             return await _dbContext.Kenneth_GalleryItems.ToListAsync();
         }
 
-        public async Task<GalleryItem> UploadImageAsync(IFormFile imageFile, string title)
+        public async Task<GalleryItem> UploadImageAsync(IFormFile imageFile, string title, string description)
         {
             if (imageFile == null || imageFile.Length == 0)
             {
                 throw new ArgumentException("Invalid image file");
             }
 
-            // Generate a unique filename and save the image
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-            var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-
-            if (!Directory.Exists(imagesFolder))
+            GalleryItem galleryItem;
+            using(var memoryStream = new MemoryStream())
             {
-                Directory.CreateDirectory(imagesFolder);
+                imageFile.CopyTo(memoryStream);
+
+                galleryItem = new GalleryItem
+                {
+                    Title = title,
+                    Description = description,
+                    ImageMimeType = imageFile.ContentType,
+                    ImageData = memoryStream.ToArray()
+                };
+                _dbContext.Kenneth_GalleryItems.Add(galleryItem);
+                await _dbContext.SaveChangesAsync();
             }
 
-            var fullImagePath = Path.Combine(imagesFolder, fileName);
+            return galleryItem;
 
-            // Save the image to the wwwroot/images folder
-            using (var stream = new FileStream(fullImagePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(stream);
-            }
+            //// Generate a unique filename and save the image
+            //var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            //var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
 
-            // Create a new gallery item
-            var newGalleryItem = new GalleryItem
-            {
-                Title = title,
-                ImagePath = "/images/" + fileName,
-                UploadDate = DateTime.Now
-            };
+            //if (!Directory.Exists(imagesFolder))
+            //{
+            //    Directory.CreateDirectory(imagesFolder);
+            //}
 
-            // Save to the database
-            _dbContext.Kenneth_GalleryItems.Add(newGalleryItem);
-            await _dbContext.SaveChangesAsync();
+            //var fullImagePath = Path.Combine(imagesFolder, fileName);
 
-            return newGalleryItem;
+            //// Save the image to the wwwroot/images folder
+            //using (var stream = new FileStream(fullImagePath, FileMode.Create))
+            //{
+            //    await imageFile.CopyToAsync(stream);
+            //}
+
+            //// Create a new gallery item
+            //var newGalleryItem = new GalleryItem
+            //{
+            //    Title = title,
+            //    ImagePath = "/images/" + fileName,
+            //    UploadDate = DateTime.Now
+            //};
+
+            //// Save to the database
+            //_dbContext.Kenneth_GalleryItems.Add(newGalleryItem);
+            //await _dbContext.SaveChangesAsync();
+
+            //return newGalleryItem;
         }
     }
 }
